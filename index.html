@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sólido de Revolución - Capas Cilíndricas</title>
+  <link rel="stylesheet" href="styles.css">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+  <script src="script.js" defer></script>
+</head>
+
+<body class="min-h-screen flex flex-col items-center p-4 md:p-6">
+
+
+  <div class="max-w-5xl w-full flex flex-col gap-4">
+    
+    <!-- Encabezado -->
+    <header class="text-center glass-panel p-4 rounded-xl shadow-xl border-b border-indigo-500/30">
+      <h1 class="text-2xl md:text-3xl font-bold bg-gradient-to-r from-blue-400 to-indigo-300 bg-clip-text text-transparent">
+        Sólido de Revolución: Método de Capas Cilíndricas
+      </h1>
+      <p class="text-slate-400 text-sm mt-1">Cálculo Integral — Rotación alrededor del Eje Y</p>
+    </header>
+
+    <!-- Panel Informativo Matemático -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+      <div class="glass-panel p-3 rounded-lg text-center">
+        <span class="text-xs text-blue-400 font-semibold block uppercase">Funciones</span>
+        <p class="text-sm mt-1">
+          <span class="text-blue-300"> Superior: f(x) = x</span><br>
+          <span class="text-amber-400"> Inferior: g(x) = x^2</span>
+        </p>
+      </div>
+
+      <div class="glass-panel p-3 rounded-lg text-center">
+        <span class="text-xs text-emerald-400 font-semibold block uppercase">Capa Cilíndrica Típica</span>
+        <p class="text-sm mt-1">
+          <strong>Radio:</strong> r(x) = x<br>
+          <strong>Altura:</strong> h(x) = x - x^2
+        </p>
+      </div>
+
+      <div class="glass-panel p-3 rounded-lg text-center">
+        <span class="text-xs text-indigo-400 font-semibold block uppercase">Integral del Volumen</span>
+        <p class="text-xs mt-1">
+          V = \int_{0}^{1} 2\pi x (x - x^2) \, dx = \frac{\pi}{6} \approx 0.5236 \, \text{u}^3
+        </p>
+      </div>
+    </div>
+
+    <!-- Visor 3D y Controles -->
+    <div class="glass-panel rounded-xl overflow-hidden shadow-2xl relative">
+      
+      <!-- Contenedor del Canvas Three.js -->
+      <div id="canvas-container"></div>
+
+      <!-- Superposición de Leyendas sobre el Canvas -->
+      <div class="absolute top-3 left-3 flex flex-col gap-1 text-xs glass-panel p-2.5 rounded-lg pointer-events-none">
+        <div class="flex items-center gap-2">
+          <span class="w-3 h-3 rounded-full bg-blue-500 inline-block"></span>
+          <span>Eje Y (Eje de Rotación)</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="w-3 h-3 rounded-full bg-emerald-400 inline-block"></span>
+          <span>Capa Cilíndrica en x</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="w-3 h-3 rounded-full bg-red-500 inline-block"></span>
+          <span>Región Generatriz (2D)</span>
+        </div>
+      </div>
+
+      <!-- Barra de Controles Inferior -->
+      <div class="p-4 bg-slate-900/90 border-t border-slate-800 flex flex-col md:flex-row gap-4 items-center justify-between">
+        
+        <!-- Botones de Acción -->
+        <div class="flex gap-2">
+          <button id="playBtn" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white font-medium text-sm rounded-lg transition-colors shadow-md flex items-center gap-1.5">
+            <span id="playIcon">▶</span> <span id="playText">Animar</span>
+          </button>
+          <button id="resetBtn" class="px-3 py-2 bg-slate-700 hover:bg-slate-600 text-slate-200 text-sm rounded-lg transition-colors">
+            ↺ Reiniciar
+          </button>
+        </div>
+
+        <!-- Slider de Rotación (Ángulo Theta) -->
+        <div class="flex-1 w-full max-w-xs flex flex-col gap-1">
+          <div class="flex justify-between text-xs text-slate-300">
+            <span>Ángulo de Rotación (\theta):</span>
+            <span id="thetaVal" class="font-mono text-indigo-300">0.00 rad</span>
+          </div>
+          <input type="range" id="thetaSlider" min="0.01" max="6.28318" step="0.05" value="0.01" 
+                 class="w-full accent-indigo-500 bg-slate-700 h-1.5 rounded-lg appearance-none cursor-pointer">
+        </div>
+
+        <!-- Slider de Posición de la Capa Cilíndrica -->
+        <div class="flex-1 w-full max-w-xs flex flex-col gap-1">
+          <div class="flex justify-between text-xs text-slate-300">
+            <span>Posición Capa (x):</span>
+            <span id="shellXVal" class="font-mono text-emerald-300">0.60</span>
+          </div>
+          <input type="range" id="shellXSlider" min="0.05" max="0.95" step="0.01" value="0.60" 
+                 class="w-full accent-emerald-500 bg-slate-700 h-1.5 rounded-lg appearance-none cursor-pointer">
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</body>
+</html>
